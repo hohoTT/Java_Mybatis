@@ -11,9 +11,12 @@
 	<!-- 共有两种方式  -->	
 	<typeAliases>
 		<!-- 第一种方式，此时 usersMapper.xml 文件中的别名为_User -->
-		<typeAlias type="com.wt.entity.test1.Users" alias="_User"/>
+		<typeAlias type="com.wt.entities.Users" alias="_User"/>
 		<!-- 第二种方式，此时 usersMapper.xml 文件中的别名为 User -->
 		<!-- <package name="com.wt.entity.test1.Users"/> -->
+		
+		
+		<typeAlias type="com.wt.entities.Order" alias="_Order"/>
 	</typeAliases>
 
 	<!-- 
@@ -40,6 +43,8 @@
 		<!-- 映射文件的注册 -->
 		<mapper resource="com/wt/entity/test1/usersMapper.xml"/>
 		<mapper resource="com/wt/entity/CRUD_Test/usersMapper.xml"/>
+		
+		<mapper resource="com/wt/entity/test2/orderMapper.xml"/>
 		
 		<!-- 注册 -->
 		<mapper class="com.wt.entity.CRUD_Test.UserMapper"/>
