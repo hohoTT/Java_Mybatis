@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
+	<!-- 添加DB的数据源数据 -->
+	<!-- 加载的即为 db.properties 文件 -->
+	<properties resource="db.properties"/>
+
+	<!-- 配置 usersMapper.xml 文件中的别名 -->
+	<!-- 配置就是实体类的别名 -->
+	<!-- 共有两种方式  -->	
+	<typeAliases>
+		<!-- 第一种方式，此时 usersMapper.xml 文件中的别名为_User -->
+		<typeAlias type="com.wt.entity.test1.Users" alias="_User"/>
+		<!-- 第二种方式，此时 usersMapper.xml 文件中的别名为 User -->
+		<!-- <package name="com.wt.entity.test1.Users"/> -->
+	</typeAliases>
+
 	<!-- 
 		default 中存在两个值
 			<1> development : 开发模式
@@ -11,10 +26,11 @@
 		<environment id="development"> 
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
-				<property name="driver" value="com.mysql.jdbc.Driver" />
-				<property name="url" value="jdbc:mysql://localhost:3306/mybatis" />
-				<property name="username" value="root" />
-				<property name="password" value="root" />
+				<!-- 注意写 value 中的数据时，不要写空格，不然会出现异常 -->
+				<property name="driver" value="${jdbc.driverClass}" />
+				<property name="url" value="${jdbc.jdbcUrl}" />
+				<property name="username" value="${jdbc.user}" />
+				<property name="password" value="${jdbc.password}" />
 			</dataSource>
 		</environment>
 	</environments>

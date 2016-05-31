@@ -10,7 +10,7 @@
 		   因为传进来的为一个User对象，那么其中的参数即为对象中对应的属性 
 		 此时用到的为java中的反射原理
 	-->
-	<insert id="addUser" parameterType="com.wt.entity.test1.Users">
+	<insert id="addUser" parameterType="_User">
 		insert into users(name, age) values(#{name}, #{age})
 	</insert> 
 	
@@ -20,18 +20,18 @@
 	</delete>
 	
 	<!-- 修改的操作 --> 
-	<update id="updateUser" parameterType="com.wt.entity.test1.Users">
+	<update id="updateUser" parameterType="_User">
 		update users set name = #{name}, age = #{age} where id = #{id}
 	</update>
 	
 	<!-- 查询某一个用户的操作 -->
 	<select id="getUser" parameterType="int"
-		resultType="com.wt.entity.test1.Users"> 
+		resultType="_User"> 
 		select * from users where id = #{id}
 	</select>
 	
 	<!-- 查询用户数据表中所用的内容 -->
-	<select id="getAllUsers" resultType="com.wt.entity.test1.Users">
+	<select id="getAllUsers" resultType="_User">
 		select * from users
 	</select>
 	
