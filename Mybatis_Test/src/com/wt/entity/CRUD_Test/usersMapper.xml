@@ -31,7 +31,7 @@
 	</select>
 	
 	<!-- 查询用户数据表中所用的内容 -->
-	<select id="getAllUsers">
+	<select id="getAllUsers" resultType="com.wt.entity.test1.Users">
 		select * from users
 	</select>
 	

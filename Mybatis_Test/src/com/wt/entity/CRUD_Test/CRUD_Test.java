@@ -1,5 +1,7 @@
 package com.wt.entity.CRUD_Test;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
@@ -87,6 +89,26 @@ public class CRUD_Test {
 		String statement = "com.wt.entity.CRUD_Test.usersMapper" + ".getUser";
 
 		Users users = session.selectOne(statement, 1);
+		
+		session.close();
+		
+		System.out.println(users);
+	} 
+	
+	// 实现数据表的整体查询，与单个查询不同点主要在配置文件中
+	@Test
+	public void testGetAllUser(){
+		SqlSessionFactory factory = MybatisUtil.getFactory();
+		
+		// 默认的提交为手动的提交，即按照普通的factory.openSession()做的话
+		// 插入的数据并没有进行数据表的插入操作，需要进行手动的打开
+		
+		// 第二种方法，设置自动提交为true
+		SqlSession session = factory.openSession(true);
+		
+		String statement = "com.wt.entity.CRUD_Test.usersMapper" + ".getAllUsers";
+
+		List<Users> users = session.selectList(statement);
 		
 		session.close();
 		
