@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt.entity.CRUD_Test.usersMapper">
+	<!-- 
+		CRUD : 实现进行增删改查的操作
+	 -->
+	 
+	<!-- 添加插入的操作 -->
+	<!-- 注意这里的name与age，这两个参数的名字是固定的，
+		   因为传进来的为一个User对象，那么其中的参数即为对象中对应的属性 
+		 此时用到的为java中的反射原理
+	-->
+	<insert id="addUser" parameterType="com.wt.entity.test1.Users">
+		insert into users(name, age) values(#{name}, #{age})
+	</insert> 
+	
+	<!-- 删除的操作 -->
+	<delete id="deleteUser" parameterType="int">
+		delete from users where id = #{id}
+	</delete>
+	
+	<!-- 修改的操作 --> 
+	<update id="updateUser" parameterType="com.wt.entity.test1.Users">
+		update users set name = #{name}, age = #{age} where id = #{id}
+	</update>
+	
+	<!-- 查询某一个用户的操作 -->
+	<select id="getUser" parameterType="int"
+		resultType="com.wt.entity.test1.Users"> 
+		select * from users where id = #{id}
+	</select>
+	
+	<!-- 查询用户数据表中所用的内容 -->
+	<select id="getAllUsers">
+		select * from users
+	</select>
+	
+</mapper>

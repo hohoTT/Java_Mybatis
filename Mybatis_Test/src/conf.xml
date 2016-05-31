@@ -19,8 +19,10 @@
 		</environment>
 	</environments>
 	
+	<!-- 进行相关的资源注册 -->
 	<mappers>
 		<mapper resource="com/wt/entity/test1/usersMapper.xml"/>
+		<mapper resource="com/wt/entity/CRUD_Test/usersMapper.xml"/>
 	</mappers>
 	
 </configuration>
