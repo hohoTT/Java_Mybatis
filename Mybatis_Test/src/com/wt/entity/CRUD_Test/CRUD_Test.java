@@ -115,4 +115,45 @@ public class CRUD_Test {
 		System.out.println(users);
 	} 
 	
+	
+	// 以下的部分为使用注解的方式对数据库表部分的测试
+	
+	@Test
+	public void testAnnotationAdd(){
+		SqlSessionFactory factory = MybatisUtil.getFactory();
+		
+		// 默认的提交为手动的提交，即按照普通的factory.openSession()做的话
+		// 插入的数据并没有进行数据表的插入操作，需要进行手动的打开
+		
+		// 第二种方法，设置自动提交为true
+		SqlSession session = factory.openSession(true);
+		
+		UserMapper userMapper = session.getMapper(UserMapper.class);
+		
+		int annotationInsert = userMapper.addUser(new Users(-1, "AA", 22));
+		
+		session.close();
+		
+		System.out.println("annotationInsert ---- " + annotationInsert);
+	} 
+	
+	@Test
+	public void testAnnotationGetUser(){
+		SqlSessionFactory factory = MybatisUtil.getFactory();
+		
+		// 默认的提交为手动的提交，即按照普通的factory.openSession()做的话
+		// 插入的数据并没有进行数据表的插入操作，需要进行手动的打开
+		
+		// 第二种方法，设置自动提交为true
+		SqlSession session = factory.openSession(true);
+		
+		UserMapper userMapper = session.getMapper(UserMapper.class);
+
+		Users annotationUser = userMapper.getById(5);
+		
+		session.close();
+		
+		System.out.println("annotationUser ---- " + annotationUser);
+	} 
+	
 }

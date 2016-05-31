@@ -21,8 +21,12 @@
 	
 	<!-- 进行相关的资源注册 -->
 	<mappers>
+		<!-- 映射文件的注册 -->
 		<mapper resource="com/wt/entity/test1/usersMapper.xml"/>
 		<mapper resource="com/wt/entity/CRUD_Test/usersMapper.xml"/>
+		
+		<!-- 注册 -->
+		<mapper class="com.wt.entity.CRUD_Test.UserMapper"/>
 	</mappers>
 	
 </configuration>
