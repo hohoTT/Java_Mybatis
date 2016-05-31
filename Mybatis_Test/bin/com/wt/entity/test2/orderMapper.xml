@@ -13,4 +13,27 @@
 		select order_id id, order_no orderNo, order_price price from Orders where order_id = #{id}
 	</select>
 	
+	<!-- 使用resultMap属性进行的查询  -->
+	<!-- id 为下方定义的resultMap -->
+	<select id="getOrder2" parameterType="int"
+			resultMap="getOrder2Map">
+		select * from Orders where order_id = #{id}
+	</select>
+	
+	
+	
+	<!-- 
+		resultMap : 封装一些映射关系
+			id : 专门针对主键
+			result : 针对一般字段
+	 -->
+	<!-- property 为java实体类中的属性值， column 为数据库表中的字段名   -->
+	<!-- type 为java中对应的实体类 -->
+	<resultMap type="com.wt.entities.Order" id="getOrder2Map">
+		<!-- id  -->
+		<id property="id" column="order_id"/>
+		<result property="orderNo" column="order_no"/>
+		<result property="price" column="order_price"/>
+	</resultMap>
+	
 </mapper>

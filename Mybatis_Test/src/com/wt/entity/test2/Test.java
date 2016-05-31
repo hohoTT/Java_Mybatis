@@ -13,7 +13,7 @@ public class Test {
 		
 		SqlSession session = factory.openSession();
 		
-		String statement = "com.wt.entity.test2.orderMapper" + ".getOrder";
+		String statement = "com.wt.entity.test2.orderMapper" + ".getOrder2";
 		
 		Order order = session.selectOne(statement, 2);
 		
