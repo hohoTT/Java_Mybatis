@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt.Mybatis.oneToMany.ClassMapper">
+	<!-- 
+		根据 classId 查询对应的班级信息,包括学生,老师
+	 -->
+	
+	<!-- 
+		1. 联表查询
+		select * from class c, student s where c.c_id = s.class_id and c.c_id = 1
+	 	
+	 	将获取的学生装填到classes类中的list集合中
+	 	
+	 	2. 执行两次查询
+	 	select * from class where c.c_id = 1 // 获取得到  s.class_id 之后进行下一步的查询
+	 	select * from student where s.class_id = 1 // 使用上面的  s.class_id
+	 -->
+	
+	<!--
+		方式一: 嵌套结果: 使用嵌套结果映射来处理重复的联合结果的子集
+		
+		SELECT * FROM class c, teacher t,student s WHERE c.teacher_id=t.t_id AND c.C_id=s.class_id AND c.c_id=1
+	-->
+	<select id="getClass" parameterType="int" resultMap="getClassMap">
+		SELECT * FROM class c, student s WHERE c.c_id = s.class_id AND c.c_id=#{id}
+	</select>
+	
+	<resultMap type="_Classes" id="getClassMap">
+		<id property="id" column="c_id"/>
+		<result property="name" column="c_name"/>
+		
+		<!-- students 为classes实体类中定义的list的集合属性  -->
+		<!-- ofType 为封装成的对象，就是集合中的元素，对应的为实体类中的Student类 -->
+		<collection property="students" ofType="_Student">
+			<id property="id" column="s_id"/>
+			<result property="name" column="s_name"/>
+		</collection>
+	</resultMap>
+	
+</mapper>
+
+
+
+

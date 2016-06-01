@@ -1,19 +1,24 @@
 package com.wt.entities;
 
+import java.util.List;
+
 public class Classes {
 
 	private int id;
 	private String name;
 	private Teacher teacher;
-	
+
+	private List<Student> students;
+
 	public Classes() {
 	}
-	
-	public Classes(int id, String name, Teacher teacher) {
+
+	public Classes(int id, String name, Teacher teacher, List<Student> students) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.teacher = teacher;
+		this.students = students;
 	}
 
 	public int getId() {
@@ -40,10 +45,18 @@ public class Classes {
 		this.teacher = teacher;
 	}
 
+	public List<Student> getStudents() {
+		return students;
+	}
+
+	public void setStudents(List<Student> students) {
+		this.students = students;
+	}
+
 	@Override
 	public String toString() {
 		return "Classes [id=" + id + ", name=" + name + ", teacher=" + teacher
-				+ "]";
+				+ ", students=" + students + "]";
 	}
-	
+
 }
