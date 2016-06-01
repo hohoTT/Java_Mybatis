@@ -18,7 +18,11 @@ public class Test {
 //		
 //		Classes classes = session.selectOne(statement, 1);
 
-		String statement = "com.wt.Mybatis.oneToMany.ClassMapper" + ".getClass2";
+//		String statement = "com.wt.Mybatis.oneToMany.ClassMapper" + ".getClass2";
+//		
+//		Classes classes = session.selectOne(statement, 1);
+		
+		String statement = "com.wt.Mybatis.oneToMany.ClassMapper" + ".getClass3";
 		
 		Classes classes = session.selectOne(statement, 1);
 		
