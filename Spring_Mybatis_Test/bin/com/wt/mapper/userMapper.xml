@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace : 必须与对应的接口全类名一致
+	id : 必须与对应接口的某个对应的方法名一致
+-->
+<mapper namespace="com.wt.mapper.UserMapper">
+	
+	<!-- 执行向数据库中的插入操作   -->
+	<insert id="save" parameterType="com.wt.entities.User">
+		insert into s_user(user_name, user_birthday, user_salary) values(#{name}, #{birthday}， #{salary})
+	</insert>
+	
+	<update id="update" parameterType="com.wt.entities.User"> 
+		update s_user set user_name = #{name}, user_birthday = #{birthday}, user_salary = #{salary} where user_id = #{id} 
+	</update>
+
+ 	<delete id="delete" parameterType="int">  
+ 		delete from s_user where user_id = #{id}
+	</delete>
+
+	<select id="findById" parameterType="int" resultType="com.wt.entities.User">
+		select user_id id, user_name name, user_birthday birthday, user_salary salary from s_user where user_id = #{id} 
+	</select>
+
+	<select id="findAll" resultType="com.wt.entities.User"> 
+		select user_id id, user_name name, user_birthday birthday, user_salary salary from s_user
+	</select>
+	
+	<resultMap type="com.wt.entities.User" id="userResult">
+		<result column="user_id" property="id"/> 
+		<result column="user_name" property="name"/>
+		<result column="user_birthday" property="birthday"/> 
+		<result column="user_salary" property="salary"/>
+	</resultMap>
+</mapper>
+
+
+
+
