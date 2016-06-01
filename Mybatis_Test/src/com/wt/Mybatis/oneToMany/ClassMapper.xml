@@ -29,6 +29,34 @@
 		<id property="id" column="c_id"/>
 		<result property="name" column="c_name"/>
 		
+		<!-- 一对多关联的设置  -->
+		<!-- students 为classes实体类中定义的list的集合属性  -->
+		<!-- ofType 为封装成的对象，就是集合中的元素，对应的为实体类中的Student类 -->
+		<collection property="students" ofType="_Student">
+			<id property="id" column="s_id"/>
+			<result property="name" column="s_name"/>
+		</collection>
+	</resultMap>
+	
+	
+	<select id="getClass2" parameterType="int" resultMap="getClassMap2">
+		SELECT * FROM class c, teacher t,student s WHERE c.teacher_id=t.t_id AND c.C_id=s.class_id AND c.c_id=1
+	</select>
+	
+	<resultMap type="_Classes" id="getClassMap2">
+		<id property="id" column="c_id"/>
+		<result property="name" column="c_name"/>
+		
+		<!-- 一对一关联的设置  -->
+		<!-- 设置的即为teacher表  -->
+		<!-- Teacher 为classes中的teacher别名  -->
+		<!-- javaType 中为实体类中对应的 Teacher -->
+		<association property="teacher" javaType="_Teacher">
+			<id property="id" column="t_id"/>
+			<result property="name" column="t_name"/>
+		</association>
+		
+		<!-- 一对多关联的设置  -->
 		<!-- students 为classes实体类中定义的list的集合属性  -->
 		<!-- ofType 为封装成的对象，就是集合中的元素，对应的为实体类中的Student类 -->
 		<collection property="students" ofType="_Student">
