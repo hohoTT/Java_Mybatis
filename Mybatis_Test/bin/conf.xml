@@ -17,6 +17,9 @@
 		
 		
 		<typeAlias type="com.wt.entities.Order" alias="_Order"/>
+		
+		<typeAlias type="com.wt.entities.Teacher" alias="_Teacher"/>
+		<typeAlias type="com.wt.entities.Classes" alias="_Classes"/>
 	</typeAliases>
 
 	<!-- 

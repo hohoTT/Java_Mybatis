@@ -23,7 +23,7 @@
 		select * from class c, teacher t where c.teacher_id = t.t_id and c.c_id = #{id}
 	</select>
 	
-	<resultMap type="com.wt.entities.Classes" id="getClassMap">
+	<resultMap type="_Classes" id="getClassMap">
 		<id property="id" column="c_id"/>
 		<result property="name" column="c_name"/>
 		
@@ -31,7 +31,7 @@
 		<!-- 设置的即为teacher表  -->
 		<!-- Teacher 为classes中的teacher别名  -->
 		<!-- javaType 中为实体类中对应的 Teacher -->
-		<association property="teacher" javaType="com.wt.entities.Teacher">
+		<association property="teacher" javaType="_Teacher">
 			<id property="id" column="t_id"/>
 			<result property="name" column="t_name"/>
 		</association>
@@ -49,11 +49,11 @@
 		SELECT * FROM class WHERE c_id = #{id}
 	</select>
 	
-	<select id="getTeacher" parameterType="int" resultType="com.wt.entities.Teacher">
+	<select id="getTeacher" parameterType="int" resultType="_Teacher">
 		SELECT t_id id, t_name name FROM teacher WHERE t_id = #{id}
 	</select>
 	
-	<resultMap type="com.wt.entities.Classes" id="getClass2Map">
+	<resultMap type="_Classes" id="getClass2Map">
 		<id property="id" column="c_id"/>
 		<result property="name" column="c_name"/>
 
