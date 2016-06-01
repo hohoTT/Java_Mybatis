@@ -15,11 +15,9 @@
 	 -->
 	
 	<!--
-	
 		方式一：嵌套结果：使用嵌套结果映射来处理重复的联合结果的子集
 		
 		封装联表查询的数据(去除重复的数据) select * from class c, teacher t where c.teacher_id=t.t_id and c.c_id=1
-	
 	-->
 	<select id="getClass" parameterType="int" resultMap="getClassMap">
 		select * from class c, teacher t where c.teacher_id = t.t_id and c.c_id = #{id}
@@ -36,6 +34,31 @@
 		<association property="teacher" javaType="com.wt.entities.Teacher">
 			<id property="id" column="t_id"/>
 			<result property="name" column="t_name"/>
+		</association>
+	</resultMap>
+	
+	
+	<!--
+		方式二：嵌套查询：通过执行另外一个 SQL 映射语句来返回预期的复杂类型
+		
+		SELECT * FROM class WHERE c_id=1;
+		
+		SELECT * FROM teacher WHERE t_id=1  //1 是上一个查询得到的 teacher_id 的值
+	-->
+	<select id="getClass2" parameterType="int" resultMap="getClass2Map">
+		SELECT * FROM class WHERE c_id = #{id}
+	</select>
+	
+	<select id="getTeacher" parameterType="int" resultType="com.wt.entities.Teacher">
+		SELECT t_id id, t_name name FROM teacher WHERE t_id = #{id}
+	</select>
+	
+	<resultMap type="com.wt.entities.Classes" id="getClass2Map">
+		<id property="id" column="c_id"/>
+		<result property="name" column="c_name"/>
+
+		<!-- column="teacher_id" 为第二次查询提供id值   -->
+		<association property="teacher" column="teacher_id" select="getTeacher">
 		</association>
 	</resultMap>
 

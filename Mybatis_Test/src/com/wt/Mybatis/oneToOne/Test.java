@@ -14,7 +14,11 @@ public class Test {
 		
 		SqlSession session = factory.openSession();
 		
-		String statement = "com.wt.Mybatis.oneToOne.ClassMapper" + ".getClass";
+//		String statement = "com.wt.Mybatis.oneToOne.ClassMapper" + ".getClass";
+//		
+//		Classes classes = session.selectOne(statement, 1);
+
+		String statement = "com.wt.Mybatis.oneToOne.ClassMapper" + ".getClass2";
 		
 		Classes classes = session.selectOne(statement, 1);
 		
