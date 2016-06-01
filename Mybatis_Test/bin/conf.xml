@@ -46,6 +46,8 @@
 		
 		<mapper resource="com/wt/entity/test2/orderMapper.xml"/>
 		
+		<mapper resource="com/wt/Mybatis/oneToOne/ClassMapper.xml"/>
+		
 		<!-- 注册 -->
 		<mapper class="com.wt.entity.CRUD_Test.UserMapper"/>
 	</mappers>

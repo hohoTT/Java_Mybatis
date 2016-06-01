@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt.Mybatis.oneToOne.ClassMapper">
+	<!-- 
+		根据班级 id 查询班级信息(带老师的信息)
+	 -->
+	
+	<!-- 
+		1. 联表查询
+		select * from class c, teacher t where c.teacher_id = t.t_id and c.c_id = 1
+	 	
+	 	2. 执行两次查询
+	 	select * from class where c.c_id = 1 // 获取得到 teacher_id 之后进行下一步的查询
+	 	select * from teacher where t.t_id = 1 // 使用上面的 teacher_id 
+	 -->
+	
+	<!--
+	
+		方式一：嵌套结果：使用嵌套结果映射来处理重复的联合结果的子集
+		
+		封装联表查询的数据(去除重复的数据) select * from class c, teacher t where c.teacher_id=t.t_id and c.c_id=1
+	
+	-->
+	<select id="getClass" parameterType="int" resultMap="getClassMap">
+		select * from class c, teacher t where c.teacher_id = t.t_id and c.c_id = #{id}
+	</select>
+	
+	<resultMap type="com.wt.entities.Classes" id="getClassMap">
+		<id property="id" column="c_id"/>
+		<result property="name" column="c_name"/>
+		
+		<!-- 一对一关联的设置  -->
+		<!-- 设置的即为teacher表  -->
+		<!-- Teacher 为classes中的teacher别名  -->
+		<!-- javaType 中为实体类中对应的 Teacher -->
+		<association property="teacher" javaType="com.wt.entities.Teacher">
+			<id property="id" column="t_id"/>
+			<result property="name" column="t_name"/>
+		</association>
+	</resultMap>
+
+</mapper>
+
+
+
+
