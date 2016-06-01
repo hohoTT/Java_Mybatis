@@ -22,6 +22,8 @@
 		<typeAlias type="com.wt.entities.Classes" alias="_Classes"/>
 		<typeAlias type="com.wt.entities.Student" alias="_Student"/>
 		
+		<typeAlias type="com.wt.entities.PUser" alias="_PUser"/>
+		
 		<typeAlias type="com.wt.entities.ConditionUser" alias="_ConditionUser"/>
 	</typeAliases>
 
@@ -56,6 +58,8 @@
 		<mapper resource="com/wt/Mybatis/oneToMany/ClassMapper.xml"/>
 		
 		<mapper resource="com/wt/Mybatis/likeSelect/userMapper.xml"/>
+		
+		<mapper resource="com/wt/Mybatis/storedProcedure/userMapper.xml"/>
 		
 		<!-- 注册 -->
 		<mapper class="com.wt.entity.CRUD_Test.UserMapper"/>

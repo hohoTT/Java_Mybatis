@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt.Mybatis.storedProcedure.userMapper">
+	<!-- 
+		使用存储过程，查询得到男性或女性的数量, 如果传入的是 0 就女性否则是男性
+	 -->
+	<!-- 注意：因为存储的使用，
+		所以默认的statementType="PREPARED"需要改为statementType="CALLABLE" 
+	-->
+	<select id="getUserCount" parameterMap="getUserCountParameterMap"
+			statementType="CALLABLE">
+		CALL mybatis.ges_user_count(?, ?);
+	</select>
+	 
+	<!-- type表示传进来的参数的类型，即测试时创建的Map集合 -->
+	<!-- 
+		测试时创建的  Map 集合
+		Map<String, Integer> parameterMap = new HashMap<String, Integer>();
+		parameterMap.put("sexId", 0);
+		parameterMap.put("userCount", -1);
+	 -->
+	<!-- 其中的mode属性表示属性的出还是进   -->
+	<parameterMap type="java.util.Map" id="getUserCountParameterMap">
+		<parameter property="sexId" mode="IN" jdbcType="INTEGER"/>
+		<parameter property="userCount" mode="OUT" jdbcType="INTEGER"/>
+	</parameterMap>
+	 
+</mapper>
+
+
+
+
