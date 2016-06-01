@@ -12,10 +12,13 @@ import com.wt.entities.CUser;
  * @author hohoTT
  * 
  * 测试 Mybatis 缓存
- * 1. 清空一级缓存的情况
+ * 1. 清空一级缓存的情况，一级缓存是一个 session 级的缓存
  * 	   <1>. session.clearCache();
  * 	   <2>. CRID 操作
  * 	   <3>. 使用不同的session对象
+ * 
+ * 2. 二级缓存的使用 ： 是一个映射文件级的缓存
+ * 
  */
 public class CacheTest {
 
@@ -57,6 +60,27 @@ public class CacheTest {
 		session.close();
 	}
 
+	
+	@Test
+	public void testCacheTwo() {
+		
+		SqlSessionFactory factory = MybatisUtil.getFactory();
+		
+		SqlSession session1 = factory.openSession();
+		SqlSession session2 = factory.openSession();
+		
+		String statement = "com.wt.Mybatis.cache.userMapper" + ".getUser";
+		
+		CUser cUser1 = session1.selectOne(statement, 1);
+		session1.commit();
+		System.out.println(cUser1);
+		
+		
+		CUser cUser2 = session2.selectOne(statement, 1);
+		session2.commit();
+		System.out.println(cUser2);
+		
+	}
 }
 
 

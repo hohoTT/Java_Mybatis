@@ -5,6 +5,10 @@
 		Mybatis 缓存使用，根据 id 查询对应的用户记录对象
 	-->
 	
+	<!-- 开启二级缓存,默认的是关闭的 -->
+	<cache></cache>
+	
+	
 	<select id="getUser" parameterType="int" resultType="_CUser">
 		select * from c_user where id=#{id}
 	</select>

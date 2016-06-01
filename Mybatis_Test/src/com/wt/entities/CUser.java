@@ -1,6 +1,8 @@
 package com.wt.entities;
 
-public class CUser {
+import java.io.Serializable;
+
+public class CUser implements Serializable{
 
 	private int id;
 	private String name;
