@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt.Mybatis.likeSelect.userMapper">
+	
+	<!-- 
+		实现多条件查询用户(姓名模糊匹配, 年龄在指定的最小值到最大值之间)
+	 -->
+	
+	<!-- 这里用到的name、minAge、maxAge为实体类中创建的模糊查询的类的属性  -->
+	<select id="getUser" parameterType="_ConditionUser" 
+			resultType="_User">
+		select * from d_user where name like #{name} and age between #{minAge} and #{maxAge}
+	</select>
+	
+	
+</mapper>
+
+
+
+
