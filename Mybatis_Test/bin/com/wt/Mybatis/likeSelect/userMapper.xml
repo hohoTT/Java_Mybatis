@@ -7,9 +7,21 @@
 	 -->
 	
 	<!-- 这里用到的name、minAge、maxAge为实体类中创建的模糊查询的类的属性  -->
-	<select id="getUser" parameterType="_ConditionUser" 
+	<select id="getUser1" parameterType="_ConditionUser" 
 			resultType="_User">
 		select * from d_user where name like #{name} and age between #{minAge} and #{maxAge}
+	</select>
+	
+	<!-- 以下的为使用动态的sql语句进行查询的代码示例  -->
+	<select id="getUser2" parameterType="_ConditionUser" 
+			resultType="_User">
+		select * from d_user where 
+		
+		<if test='name != "%null%" '>
+			name like #{name} and 
+		</if>
+		
+		age between #{minAge} and #{maxAge}
 	</select>
 	
 	

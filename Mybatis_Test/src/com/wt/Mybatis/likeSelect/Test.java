@@ -18,9 +18,17 @@ public class Test {
 		
 		SqlSession session = factory.openSession();
 		
-		String statement = "com.wt.Mybatis.likeSelect.userMapper" + ".getUser";
+		// getUser1
+//		String statement = "com.wt.Mybatis.likeSelect.userMapper" + ".getUser1";
+//		
+//		String name = "o";
+//		
+//		ConditionUser conditionUser = new ConditionUser("%" + name + "%", 13, 18);
 		
-		String name = "o";
+		// getUser2
+		String statement = "com.wt.Mybatis.likeSelect.userMapper" + ".getUser2";
+		
+		String name = null;
 		
 		ConditionUser conditionUser = new ConditionUser("%" + name + "%", 13, 18);
 		
