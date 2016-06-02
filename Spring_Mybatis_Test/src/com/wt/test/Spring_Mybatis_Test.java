@@ -1,6 +1,7 @@
 package com.wt.test;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,5 +27,28 @@ public class Spring_Mybatis_Test {
 		userMapper.save(user);
 	}
 	
+	@Test
+	public void testUpdate(){
+		
+		User user = new User(1, "hohoTT", new Date(), 666);
+		
+		userMapper.update(user);
+	}
 	
+	@Test
+	public void testDelete(){
+		userMapper.delete(2);
+	}
+	
+	@Test
+	public void testFindById(){
+		User user = userMapper.findById(1);
+		System.out.println(user);
+	}
+	
+	@Test
+	public void testFindAll(){
+		List<User> users = userMapper.findAll();
+		System.out.println(users);
+	}
 }
