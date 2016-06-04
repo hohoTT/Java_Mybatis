@@ -1,5 +1,6 @@
 package wt.seckill.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -36,7 +37,11 @@ public class SeckillDaoTest {
 	
 	@Test
 	public void testQueryAll() throws Exception {
-		List<Seckill> seckills = seckillDao.queryAll(0, 5);
+		// java 没有保存形参的记录
+		// 举例 ： queryAll(int offset, int limit) - > queryAll(arg0, arg1)
+		
+		
+		List<Seckill> seckills = seckillDao.queryAll(0, 100);
 		
 		for (Seckill seckill : seckills) {
 			System.out.println(seckill);
@@ -44,10 +49,13 @@ public class SeckillDaoTest {
 		
 	}
 	
-	
 	@Test
 	public void testReduceNumber() throws Exception {
+		Date killTime = new Date();
 		
+		int updateCount = seckillDao.reduceNumber(1000, killTime);
+		
+		System.out.println("updateCount ---- " + updateCount);
 	}
 
 }
