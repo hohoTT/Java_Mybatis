@@ -9,8 +9,8 @@
 		<!-- 主键冲突后，报错 
 			添加 ignore，只是在主键冲突时起作用，此时不报错，变为返回值为 0
 		-->
-		insert ignore into success_killed(seckill_id, user_phone)
-		values (#{seckillId}, #{userPhone})
+		insert ignore into success_killed(seckill_id, user_phone, state)
+		values (#{seckillId}, #{userPhone}, 0)
 	</insert>
 	
 	<select id="queryByIdWithSeckill" resultType="SuccessKilled">
@@ -30,7 +30,7 @@
 			s.create_time "seckill.create_time"			
 		from success_killed sk
 		inner join seckill s on sk.seckill_id = s.seckill_id
-		where sk.seckill_id = #{seckillId}
+		where sk.seckill_id = #{seckillId} and sk.user_phone = #{userPhone}
 	</select>
 	
 </mapper>
