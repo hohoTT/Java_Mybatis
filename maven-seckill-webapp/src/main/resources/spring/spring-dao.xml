@@ -6,6 +6,7 @@
  http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- 配置整合 mybatis 过程 -->
+	
 	<!-- 1. 配置数据库相关参数 
 		property 的属性： ${..}
 	-->
@@ -30,6 +31,7 @@
 		<property name="acquireRetryAttempts" value="2"></property>
 	</bean>
 	
+	<!-- 约定大于配置 -->
 	<!-- 3. 配置 SqlSessionFactory -->
 	<bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		
@@ -55,6 +57,9 @@
 		
 		<!-- 注入SqlSessionFactory -->
 		<property name="SqlSessionFactoryBeanName"></property>
+
+		<!-- 给出需要扫描Dao接口包 -->
+		<property name="basePackage" value="wt.seckill.dao"></property>
 	
 	</bean>
 	
