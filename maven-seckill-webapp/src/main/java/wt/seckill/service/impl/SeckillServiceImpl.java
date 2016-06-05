@@ -99,7 +99,7 @@ public class SeckillServiceImpl implements SeckillService {
 			String md5) throws SeckillException, RepeatKillException,
 			SeckillCloseException {
 
-		if (md5 == null || md5.equals(getMD5(seckillId))) {
+		if (md5 == null || !md5.equals(getMD5(seckillId))) {
 			// 返回秒杀业务被重写的异常
 			throw new SeckillException("seckill data rewrite");
 		}
