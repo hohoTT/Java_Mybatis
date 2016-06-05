@@ -5,7 +5,7 @@ package wt.seckill.exception;
  * @author hohoTT √Î…±πÿ±’“Ï≥£
  * 
  */
-public class SeckillCloseException extends RuntimeException {
+public class SeckillCloseException extends SeckillException {
 
 	public SeckillCloseException(String message) {
 		super(message);
