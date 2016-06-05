@@ -5,6 +5,30 @@
 	id="WebApp_ID" version="3.0">
 
 	<!-- maven 创建的web工程需要修改 web.xml中的 servlet的版本  -->
+	
+	<!-- 配置 springMVC 的中央控制器 DispatcherServlet -->
+	<servlet>
+		<servlet-name>seckill-dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		
+		<!--
+         	   配置SpringMVC 需要配置的文件
+             spring-dao.xml, spring-service.xml, spring-web.xml
+             Mybatis -> spring -> springMVC
+        -->
+        
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/spring-*.xml</param-value>
+        </init-param>
+        
+	</servlet>
+	
+	<servlet-mapping>
+        <servlet-name>seckill-dispatcher</servlet-name>
+        <!--默认匹配所有请求-->
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
