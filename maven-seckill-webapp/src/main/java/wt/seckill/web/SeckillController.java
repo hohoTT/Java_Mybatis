@@ -37,7 +37,7 @@ public class SeckillController {
 	// 获取秒杀的列表页
 	// Model 用来存放渲染页面的数据
 	// list.jsp 为页面的模板
-	@RequestMapping(name = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(Model model) {
 		// 获取列表页
 		List<Seckill> list = seckillService.getSeckillList();
