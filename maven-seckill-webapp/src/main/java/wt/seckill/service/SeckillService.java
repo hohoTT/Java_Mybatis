@@ -22,11 +22,11 @@ public interface SeckillService {
 	List<Seckill> getSeckillList();
 
 	// 查询单个秒杀记录
-	Seckill getById(long SeckillId);
+	Seckill getById(long seckillId);
 
 	// 秒杀开启时 : 出入秒杀接口的地址
 	// 否则输出系统时间和秒杀时间
-	Exposer exportSeckillUrl(long SeckillId);
+	Exposer exportSeckillUrl(long seckillId);
 
 	// 执行秒杀操作
 	SeckillExecution executeSeckill(long seckillId, long userPhone, String md5)
