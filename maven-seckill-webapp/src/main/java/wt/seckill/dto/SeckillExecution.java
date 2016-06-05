@@ -1,6 +1,7 @@
 package wt.seckill.dto;
 
 import wt.seckill.entity.SuccessKilled;
+import wt.seckill.enums.SeckillStatEnum;
 
 /**
  * 
@@ -20,20 +21,22 @@ public class SeckillExecution {
 	// 秒杀成功对象
 	private SuccessKilled successKilled;
 
-	public SeckillExecution(long seckillId, int state, String stateInfo,
+	// 使用枚举类型，进行代码优化
+	public SeckillExecution(long seckillId, SeckillStatEnum statEnum,
 			SuccessKilled successKilled) {
 		super();
 		this.seckillId = seckillId;
-		this.state = state;
-		this.stateInfo = stateInfo;
+		this.state = statEnum.getState();
+		this.stateInfo = statEnum.getStateInfo();
 		this.successKilled = successKilled;
 	}
 
-	public SeckillExecution(long seckillId, int state, String stateInfo) {
+	// 使用枚举类型，进行代码优化
+	public SeckillExecution(long seckillId, SeckillStatEnum statEnum) {
 		super();
 		this.seckillId = seckillId;
-		this.state = state;
-		this.stateInfo = stateInfo;
+		this.state = statEnum.getState();
+		this.stateInfo = statEnum.getStateInfo();
 	}
 
 	public long getSeckillId() {

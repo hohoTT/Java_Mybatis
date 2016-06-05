@@ -13,6 +13,7 @@ import wt.seckill.dto.Exposer;
 import wt.seckill.dto.SeckillExecution;
 import wt.seckill.entity.Seckill;
 import wt.seckill.entity.SuccessKilled;
+import wt.seckill.enums.SeckillStatEnum;
 import wt.seckill.exception.RepeatKillException;
 import wt.seckill.exception.SeckillCloseException;
 import wt.seckill.exception.SeckillException;
@@ -109,8 +110,9 @@ public class SeckillServiceImpl implements SeckillService {
 					SuccessKilled successKilled = successKilledDao
 							.queryByIdWithSeckill(seckillId, userPhone);
 
-					return new SeckillExecution(seckillId, 1, "秒杀成功",
-							successKilled);
+					// 使用枚举类型，进行代码优化
+					return new SeckillExecution(seckillId,
+							SeckillStatEnum.SUCCESS, successKilled);
 				}
 
 			}
