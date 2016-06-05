@@ -45,7 +45,7 @@
 								</td>
 								<td>
 									<a class="btn btn-info"
-									href="/seckill/${sk.seckillId}/detail" target="_blank">详情页</a>
+									href="${sk.seckillId}/detail" target="_blank">详情页</a>
 								</td>
 							</tr>
 						</c:forEach>
