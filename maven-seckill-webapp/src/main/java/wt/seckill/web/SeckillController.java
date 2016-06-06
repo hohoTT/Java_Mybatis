@@ -68,7 +68,7 @@ public class SeckillController {
 	// @ResponseBody 告诉springMVC 该方法返回的为 json 数据
 	@RequestMapping(value = "{seckillId}/exposer", method = RequestMethod.POST, produces = { "application/json;charset=UTF-8" })
 	@ResponseBody
-	public SeckillResult<Exposer> exposer(Long seckillId) {
+	public SeckillResult<Exposer> exposer(@PathVariable("seckillId") Long seckillId) {
 
 		SeckillResult<Exposer> result;
 
@@ -88,36 +88,36 @@ public class SeckillController {
 	@ResponseBody
 	public SeckillResult<SeckillExecution> execute(
 			@PathVariable("seckillId") Long seckillId,
-			@CookieValue(value = "userPhone", required = false) Long userPhone,
+			@CookieValue(value = "killPhone", required = false) Long killPhone,
 			@PathVariable("md5") String md5) {
 
 		// springMVC valid
-		if (userPhone == null) {
+		if (killPhone == null) {
 			return new SeckillResult<SeckillExecution>(false, "未注册");
 		}
 		try {
 			SeckillExecution seckillExecution = seckillService.executeSeckill(
-					seckillId, userPhone, md5);
+					seckillId, killPhone, md5);
 			return new SeckillResult<SeckillExecution>(true, seckillExecution);
 		} catch (RepeatKillException e) {
 			SeckillExecution seckillExecution = new SeckillExecution(seckillId,
 					SeckillStatEnum.REPEAT_KILL);
-			return new SeckillResult<SeckillExecution>(false, seckillExecution);
+			return new SeckillResult<SeckillExecution>(true, seckillExecution);
 		} catch (SeckillCloseException e) {
 			SeckillExecution seckillExecution = new SeckillExecution(seckillId,
 					SeckillStatEnum.END);
-			return new SeckillResult<SeckillExecution>(false, seckillExecution);
+			return new SeckillResult<SeckillExecution>(true, seckillExecution);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			SeckillExecution seckillExecution = new SeckillExecution(seckillId,
 					SeckillStatEnum.INNER_ERROR);
-			return new SeckillResult<SeckillExecution>(false, seckillExecution);
+			return new SeckillResult<SeckillExecution>(true, seckillExecution);
 		}
 
 	}
 
 	// 获取系统时间
-	@RequestMapping(value = "/time/now", method = RequestMethod.GET, produces = { "application/json;charset=UTF-8" })
+	@RequestMapping(value = "time/now", method = RequestMethod.GET, produces = { "application/json;charset=UTF-8" })
 	@ResponseBody
 	public SeckillResult<Long> time() {
 		Date now = new Date();
