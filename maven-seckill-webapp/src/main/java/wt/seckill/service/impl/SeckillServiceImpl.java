@@ -12,6 +12,7 @@ import org.springframework.util.DigestUtils;
 
 import wt.seckill.dao.SeckillDao;
 import wt.seckill.dao.SuccessKilledDao;
+import wt.seckill.dao.cache.RedisDao;
 import wt.seckill.dto.Exposer;
 import wt.seckill.dto.SeckillExecution;
 import wt.seckill.entity.Seckill;
@@ -35,6 +36,9 @@ public class SeckillServiceImpl implements SeckillService {
 	@Autowired
 	private SuccessKilledDao successKilledDao;
 
+	@Autowired
+	private RedisDao redisDao;
+
 	// md5 盐值字符串，用于混淆 md5
 	private final String slat = "asdadwqr^&$^&*&ASNDIADSA489IOGKB";
 
@@ -51,10 +55,34 @@ public class SeckillServiceImpl implements SeckillService {
 	@Override
 	public Exposer exportSeckillUrl(long seckillId) {
 
-		Seckill seckill = seckillDao.queryById(seckillId);
+		// 优化点 : 缓存优化
+		/**
+		 * get from cache
+		 * 
+		 * if null get db else put cache
+		 * 
+		 * locgoin
+		 */
+
+		// 优化点 ： 使用 redis 进行 seckill 的获取
+		// 业务在超时的基础上维护一致性
+		// 1. 访问 redis 进行 seckill 对象的获取
+		Seckill seckill = redisDao.getSeckill(seckillId);
 
 		if (seckill == null) {
-			return new Exposer(false, seckillId);
+			// 此时 redis 缓存中没有 seckill 对象
+			// 2. 那么此时就要通过数据库的访问进行获取
+			seckill = seckillDao.queryById(seckillId);
+
+			// 如果数据库中不存在
+			if (seckill == null) {
+				return new Exposer(false, seckillId);
+			} else {
+				// 如果数据库中查到数据，seckill 对象存在
+				// 3. 将查询得到的seckill 对象 放入到 redis 缓存中
+				redisDao.putSeckill(seckill);
+			}
+
 		}
 
 		Date startTime = seckill.getStartTime();
@@ -86,13 +114,10 @@ public class SeckillServiceImpl implements SeckillService {
 	}
 
 	/**
-     * 使用注解控制事务的优点:
-     * 1. 开发团队达成一致约定, 明确标注事务方法的编程风格.
-     * 2. 保证事务方法的执行时间尽可能短, 不要穿插其他网络操作 RPC/HTTP 请求或者玻璃到事务方法外部.
-     * 3. 不是所有的方法都需要事务. 
-     * 	如只有一条查询修改操作，只读操作不需要事务控制
-     * 	如一些查询的 service.只有一条修改操作的 service.
-     */
+	 * 使用注解控制事务的优点: 1. 开发团队达成一致约定, 明确标注事务方法的编程风格. 2. 保证事务方法的执行时间尽可能短, 不要穿插其他网络操作
+	 * RPC/HTTP 请求或者玻璃到事务方法外部. 3. 不是所有的方法都需要事务. 如只有一条查询修改操作，只读操作不需要事务控制 如一些查询的
+	 * service.只有一条修改操作的 service.
+	 */
 	@Override
 	@Transactional
 	public SeckillExecution executeSeckill(long seckillId, long userPhone,
