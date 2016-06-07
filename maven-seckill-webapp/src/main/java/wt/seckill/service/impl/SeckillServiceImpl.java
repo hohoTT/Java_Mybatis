@@ -134,22 +134,25 @@ public class SeckillServiceImpl implements SeckillService {
 		Date killTime = new Date();
 
 		try {
-			// 减库存
-			int updateCount = seckillDao.reduceNumber(seckillId, killTime);
-			if (updateCount <= 0) {
-				// 没有更新到记录,意味着秒杀结束
-				throw new SeckillCloseException("seckill closed");
-			} else {
-				// 减库存成功，记录购买行为
-				int insertCount = successKilledDao.insertSuccessKilled(
-						seckillId, userPhone);
+			// 减库存成功，记录购买行为
+			int insertCount = successKilledDao.insertSuccessKilled(seckillId,
+					userPhone);
 
-				// 唯一的验证 ： 使用的是在建表时的联合 seckillId + userPhone 的主键
-				if (insertCount <= 0) {
-					// 重复秒杀
-					throw new RepeatKillException("seckill repeated");
+			// 唯一的验证 ： 使用的是在建表时的联合 seckillId + userPhone 的主键
+			if (insertCount <= 0) {
+				// 重复秒杀
+				throw new RepeatKillException("seckill repeated");
+			} else {
+				// 减库存
+				// 热点商品竞争
+				int updateCount = seckillDao.reduceNumber(seckillId, killTime);
+				if (updateCount <= 0) {
+					// 没有更新到记录,意味着秒杀结束
+					// 进行 rollback 操作
+					throw new SeckillCloseException("seckill closed");
 				} else {
 					// 秒杀成功
+					// 此时进行 commit 操作
 					SuccessKilled successKilled = successKilledDao
 							.queryByIdWithSeckill(seckillId, userPhone);
 
@@ -157,7 +160,6 @@ public class SeckillServiceImpl implements SeckillService {
 					return new SeckillExecution(seckillId,
 							SeckillStatEnum.SUCCESS, successKilled);
 				}
-
 			}
 		} catch (SeckillCloseException e1) {
 			throw e1;
