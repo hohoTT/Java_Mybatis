@@ -76,34 +76,53 @@ public class SeckillServiceTest {
 		}
 
 	}
-	
-	
+
 	/**
-     * 集成测试代码完整逻辑：秒杀完整流程，可重复执行
-     */
-    @Test
-    public void testSeckillLogic() {
+	 * 集成测试代码完整逻辑：秒杀完整流程，可重复执行
+	 */
+	@Test
+	public void testSeckillLogic() {
 
-        long id = 1000;
-        Exposer exposer = seckillService.exportSeckillUrl(id);
-        logger.info("exposer={}",exposer.toString());
-        if (exposer.isExposed()) {
+		long id = 1000;
+		Exposer exposer = seckillService.exportSeckillUrl(id);
+		logger.info("exposer={}", exposer.toString());
+		if (exposer.isExposed()) {
 
-            long phone = 18724589299L;
-            String md5 = exposer.getMd5();
+			long phone = 18724589299L;
+			String md5 = exposer.getMd5();
 
-            try {
-                SeckillExecution seckillExecution = seckillService.executeSeckill(id, phone, md5);
-                logger.info("result={}",seckillExecution);
-            } catch (RepeatKillException e) {
-            	logger.error(e.getMessage());
-            } catch (SeckillCloseException e) {
-            	logger.error(e.getMessage());
-            }
+			try {
+				SeckillExecution seckillExecution = seckillService
+						.executeSeckill(id, phone, md5);
+				logger.info("result={}", seckillExecution);
+			} catch (RepeatKillException e) {
+				logger.error(e.getMessage());
+			} catch (SeckillCloseException e) {
+				logger.error(e.getMessage());
+			}
 
-        } else {
-        	logger.warn("秒杀未开始：{}", exposer.toString());
-        }
+		} else {
+			logger.warn("秒杀未开始：{}", exposer.toString());
+		}
+	}
 
-    }
+	@Test
+	public void testExecuteSeckillProcedure() {
+		long seckillId = 1000;
+		long phone = 18724584444L;
+
+		Exposer exposer = seckillService.exportSeckillUrl(seckillId);
+
+		if (exposer.isExposed()) {
+			String md5 = exposer.getMd5();
+			SeckillExecution execution = seckillService
+					.executeSeckillProcedure(seckillId, phone, md5);
+
+			logger.info(execution.getStateInfo());
+			System.out.println("execution.getStateInfo() --- "
+					+ execution.getStateInfo());
+		}
+
+	}
+
 }

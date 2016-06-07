@@ -1,8 +1,11 @@
 package wt.seckill.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,4 +177,40 @@ public class SeckillServiceImpl implements SeckillService {
 
 	}
 
+	@Override
+	public SeckillExecution executeSeckillProcedure(long seckillId,
+			long userPhone, String md5) {
+		if (md5 == null || !md5.equals(getMD5(seckillId))) {
+			return new SeckillExecution(seckillId, SeckillStatEnum.DATA_REWRITE);
+		}
+
+		Date killTime = new Date();
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		map.put("seckillId", seckillId);
+		map.put("killTime", killTime);
+		map.put("resule", null);
+
+		try {
+			// 执行存储过程， result 被赋值
+			seckillDao.killByProcedure(map);
+
+			// 获取result
+			int result = MapUtils.getInteger(map, "result", -2);
+
+			if (result == 1) {
+				SuccessKilled successKilled = successKilledDao
+						.queryByIdWithSeckill(seckillId, userPhone);
+
+				return new SeckillExecution(seckillId, SeckillStatEnum.SUCCESS,
+						successKilled);
+			} else {
+				return new SeckillExecution(seckillId,
+						SeckillStatEnum.stateOf(result));
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return new SeckillExecution(seckillId, SeckillStatEnum.INNER_ERROR);
+		}
+	}
 }
