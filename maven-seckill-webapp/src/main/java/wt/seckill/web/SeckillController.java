@@ -68,7 +68,8 @@ public class SeckillController {
 	// @ResponseBody 告诉springMVC 该方法返回的为 json 数据
 	@RequestMapping(value = "{seckillId}/exposer", method = RequestMethod.POST, produces = { "application/json;charset=UTF-8" })
 	@ResponseBody
-	public SeckillResult<Exposer> exposer(@PathVariable("seckillId") Long seckillId) {
+	public SeckillResult<Exposer> exposer(
+			@PathVariable("seckillId") Long seckillId) {
 
 		SeckillResult<Exposer> result;
 
@@ -96,8 +97,14 @@ public class SeckillController {
 			return new SeckillResult<SeckillExecution>(false, "未注册");
 		}
 		try {
-			SeckillExecution seckillExecution = seckillService.executeSeckill(
-					seckillId, killPhone, md5);
+			// SeckillExecution seckillExecution =
+			// seckillService.executeSeckill(
+			// seckillId, killPhone, md5);
+			
+			// 改用存储过程的方式调用
+			SeckillExecution seckillExecution = seckillService
+					.executeSeckillProcedure(seckillId, killPhone, md5);
+
 			return new SeckillResult<SeckillExecution>(true, seckillExecution);
 		} catch (RepeatKillException e) {
 			SeckillExecution seckillExecution = new SeckillExecution(seckillId,
