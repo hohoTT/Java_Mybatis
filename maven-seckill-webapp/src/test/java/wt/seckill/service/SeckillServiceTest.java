@@ -83,7 +83,7 @@ public class SeckillServiceTest {
 	@Test
 	public void testSeckillLogic() {
 
-		long id = 1000;
+		long id = 1002;
 		Exposer exposer = seckillService.exportSeckillUrl(id);
 		logger.info("exposer={}", exposer.toString());
 		if (exposer.isExposed()) {
@@ -108,13 +108,13 @@ public class SeckillServiceTest {
 
 	@Test
 	public void testExecuteSeckillProcedure() {
-		long seckillId = 1000;
-		long phone = 18724584444L;
+		long seckillId = 1002;
 
 		Exposer exposer = seckillService.exportSeckillUrl(seckillId);
 
 		if (exposer.isExposed()) {
 			String md5 = exposer.getMd5();
+			long phone = 18766668888L;
 			SeckillExecution execution = seckillService
 					.executeSeckillProcedure(seckillId, phone, md5);
 

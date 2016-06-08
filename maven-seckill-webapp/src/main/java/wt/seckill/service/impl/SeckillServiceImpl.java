@@ -188,8 +188,9 @@ public class SeckillServiceImpl implements SeckillService {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		map.put("seckillId", seckillId);
+		map.put("phone", userPhone);
 		map.put("killTime", killTime);
-		map.put("resule", null);
+		map.put("result", null);
 
 		try {
 			// 执行存储过程， result 被赋值
