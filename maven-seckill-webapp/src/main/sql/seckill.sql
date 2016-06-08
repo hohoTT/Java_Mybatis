@@ -13,11 +13,11 @@ CREATE PROCEDURE execute_seckill
 		DECLARE insert_count int DEFAULT 0;
 		START TRANSACTION;
 		insert ignore into success_killed
-			(seckill_id, user_phone, create_time)
-		values(v_seckill_id, v_phone, v_kill_time);
+			(seckill_id, user_phone, state, create_time)
+		values(v_seckill_id, v_phone, 0, v_kill_time);
 		
 		select row_count() into insert_count;
-		IF (insert_count == 0) THEN
+		IF (insert_count = 0) THEN
 			ROLLBACK;
 			SET r_result = -1;
 		ELSEIF (insert_count < 0) THEN
@@ -32,7 +32,7 @@ CREATE PROCEDURE execute_seckill
 				and number > 0;
 			
 			select row_count() into insert_count;
-			IF (insert_count == 0) THEN
+			IF (insert_count = 0) THEN
 				ROLLBACK;
 				SET r_result = 0;
 			ELSEIF (insert_count < 0) THEN
