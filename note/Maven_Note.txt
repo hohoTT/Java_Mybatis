@@ -1,0 +1,281 @@
+src 
+	-main
+		-java
+			-package
+	-test
+		-java
+			-package
+	resources
+	
+	
+groupId 就是项目的包名
+artifactId 是模块名
+
+
+----  maven 中常用到的命令
+
+mvn -v				查看 maven 版本
+	compile			编译
+	test			测试
+	package			打包
+	
+	clean			删除 target
+	install 		安装 jar 包到本地仓库中
+	
+	创建目录的两种方式：
+		1. archetype:generate		自动安装搭建maven的项目结构骨架，但是之后要输入一些有关 pom.xml 中的内容
+		
+		2. archetype:generate -DgroupId=com.wt.mavenAutoCreate 			组织名，公司网址的反写+项目名
+							  -DartifactId=mavenAutoCreate-service 		项目名-模块名
+							  -Dversion=1.0.0-SNAPSHOT 					版本号
+							  -Dpackage=com.wt.mavenAutoCreate			代码所存在的包
+	
+	
+	
+archetype 插件
+	用于创建符合 maven 规定的目录结构 
+	
+	
+	
+	坐标
+		构件
+	
+	仓库
+		本地仓库和远程仓库
+		
+	镜像仓库
+	
+	
+配置 -Dmaven.multiModuleProjectDirectory=$M2_HOME  注意此时的 JDK 版本需要设置为1.7的版本，1.8的版本会报错 
+
+
+依赖的第一部分讲解：
+maven-a、maven-b、maven-c  三个项目的一开关系为：
+
+1. maven-a 依赖于 maven-b
+2. maven-c 依赖于maven-a
+
+所以 
+3. maven-c 依赖于 maven-b
+
+
+
+依赖的第二部分讲解：（越接近依赖与哪一个）
+c - >  a - > b
+2.0   2.0   2.4
+
+maven-b 中使用的版本为 2.4
+maven-a 中使用的版本为 2.0
+因为maven-c离maven-a近，所以版本为2.0
+maven-c 中使用的版本为 2.0
+
+
+
+依赖的第三部分讲解：（距离相同时，依赖与加载的顺序，先加载先依赖）
+
+
+依赖的继承：
+实现maven项目中的依赖继承关系，创建一个父maven项目maven-parent，使得maven-b继承与maven-parent，实现代码的复用
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+创建maven的web项目工程所出现的错误
+
+1. Could not calculate build plan: Plugin 
+
+解决方法 \org\apache\maven\plugins目录下的文件夹全部删除，重新下载。
+
+
+2. Failure to transfer org.codehaus.plexus:plexus-archiver:jar:
+
+解决方法 网址 -----    http://blog.csdn.net/gao36951/article/details/46491405
+需要的jar包 ---- D:\备份\F盘备份\maven\jar\plexus相关jar包
+
+
+
+
+使用  tomcat  作为maven的服务器容器
+
+第一种方式
+
+<build>
+	<finalName>maven-webDemo</finalName>
+
+	<plugins>
+		<!-- 以下为嵌入Tomcat服务器   -->
+		<plugin>
+			<groupId>org.apache.tomcat.maven</groupId>
+			<artifactId>tomcat7-maven-plugin</artifactId>
+			<version>2.1</version>
+			<configuration>
+				<port>8080</port>
+				<path>/maven-webDemo</path>
+				<uriEncoding>UTF-8</uriEncoding>
+				<finalName>maven-webDemo</finalName>
+				<server>tomcat7</server>
+			</configuration>
+			
+			<!-- 以下的配置为在打包成功后使用tomcat:run来运行tomcat服务 -->
+			<executions>
+				<execution>
+					<phase>package</phase>
+					<goals>
+						<goal>run</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+
+	</plugins>
+</build>
+
+
+
+第二种方式
+
+
+<build>
+	<finalName>maven-webDemo</finalName>
+
+	<plugins>
+
+		<!-- 以下为嵌入Tomcat服务器 -->
+		<plugin>
+			<groupId>org.apache.tomcat.maven</groupId>
+			<artifactId>tomcat7-maven-plugin</artifactId>
+			<version>2.2</version>
+
+			<!-- 以下的配置为在打包成功后使用tomcat:run来运行tomcat服务 -->
+			<executions>
+				<execution>
+					<phase>package</phase>
+					<goals>
+						<goal>run</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+
+	</plugins>
+</build>
+
+
+
+
+
+
+
+创建练习的maven的web项目工程
+
+mvn archetype:generate -DgroupId=wt.seckill -DartifactId=maven-archetype-webapp
+
+选择 Define value for property 'version':  1.0-SNAPSHOT: : 1.0.0-SNAPSHOT
+
+
+
+maven 创建的web工程需要修改 web.xml中的 servlet的版本
+
+修改 maven web 工程默认的jdk版本
+
+<profile>
+	
+	  <id>jdk-1.7</id>
+
+	  <activation>
+
+			 <activeByDefault>true</activeByDefault>
+
+			 <jdk>1.7</jdk>
+
+	  </activation>
+
+	  <properties>
+
+			 <maven.compiler.source>1.7</maven.compiler.source>
+
+			 <maven.compiler.target>1.7</maven.compiler.target>
+
+			 <maven.compiler.compilerVersion>1.7</maven.compiler.compilerVersion>
+
+	  </properties>
+
+</profile>
+
+
+maven 配置文件中修改仓库的位置，修改为英国的仓库
+
+<mirror>
+
+      <id>UK</id>
+
+      <name>UK Central</name>
+
+      <url>http://uk.maven.org/maven2</url>
+
+      <mirrorOf>central</mirrorOf>
+
+    </mirror>
+
+
+找到 .setting文件夹内的org.eclipse.wst.common.project.facet.core.xml文件，修改为
+
+<installed facet="jst.web" version="2.5"/>   改为 
+<installed facet="java" version="1.7"/>
+<installed facet="jst.web" version="3.0"/>
+
+但是还是会有 Maven Jave EE Configuration Problems 的红叉叉. 
+
+此问题分两步解决
+
+1、 Eclipse  Project Facets  设置问题
+
+单独将 Dynamic Web Module 设置为 3.0 ， 或修改 Java 版本似乎不起作用。设置Project Facets的争取顺序是
+
+正确的设置方法是:  a), 取消选择 Dynamic Web Module ，并应用
+
+　　　　　　　　　 b), 取消选择 Java  , 并应用。
+
+　　　　　　　　　 C), 重新选择 Java， 并应用。 此时需要设置源目录， 设置为src\main\java
+
+                          d)，重新选择Dynamic Web, 并应用。 此时需要设置WebContent目录 为 src\main\webapp
+	
+	
+	
+	
+dto 数据传输层	web层与service层之间的数据传递
+
+windows 环境下启动 redis  目录为  D:\备份\F盘备份\redis\win
+解决问题的网址  http://blog.csdn.net/renfufei/article/details/38474435
+redis-server  redis.windows.conf  
+
+redis 的常见命令：
+	redis-server  redis.windows.conf    // 启动 redis
+
+	redis-cli -p 6379					// 进入 redis
+	
+	dbsize 								// 查看 数据
+	
+	keys *								// 查看数据列表
+	
+	get 对象的key:value					// 查看某个对象的具体数据
+	
+
+
+
+
+电影
+
+1肖申克的救赎；2时间规划局；3铁甲钢拳；4社交网络；5国王的演讲；6迫在眉睫；7人生遥控器；8与狼共舞；9毕业生生存指南；10乱世佳人；11白日梦想家；12黑天鹅；13当幸福来敲门；14小屁孩日记；15勇敢的心；16这个杀手不太冷；17完美的世界；18最长的旅程；19荒野生存；20再次出发。
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
