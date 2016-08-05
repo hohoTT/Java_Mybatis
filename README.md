@@ -6,4 +6,3 @@
 秒杀项目见 maven-seckill-webapp
 
 其中涉及到的秒杀项目为使用Maven工程创建的项目，使用Maven工程进行项目的管理，解决项目中jar包依赖的关系问题
-
